@@ -1,0 +1,133 @@
+cameraOn(){
+#  $this_dir/resetusb > /dev/null
+  cur_output=`gphoto2 --auto-detect | grep "Canon EOS 7D"`
+
+  [ -n "$cur_output" ] && return 0
+  return 1
+}
+
+getLastPicName(){
+#  $this_dir/resetusb > /dev/null
+  gphoto2 --list-files | grep "#" | tail -1 | awk '{print $1, $2}' | sed -e 's/#//g'
+}
+
+getImgNumByName(){
+  curImgName=$1
+#  $this_dir/resetusb > /dev/null
+
+  #--- this will return something IF there is
+  #--- an image with the name on the camera
+  gphoto2 --list-files | grep "#" | grep "$curImgName" | awk '{print $1}' | sed -e 's/#//g'
+}
+
+getLastFileInStore(){
+  ls -a $pic_dir/transferred | grep IMG_ | sort |  tail -1
+}
+
+
+getAllFiles(){
+  cd $pic_dir/incoming
+  gphoto2 --get-all-files
+  cd -
+  return 0
+}
+
+getFiles(){
+  curImgNumFrom=$1
+  curImgNumTo=$2
+
+  cur_numFilesBefore=`ls $pic_dir/incoming | wc -l`
+
+  cd $pic_dir/incoming
+  print - "    - Command: gphoto2 --get-file=${curImgNumFrom}-${curImgNumTo}"
+  gphoto2 --get-file=${curImgNumFrom}-${curImgNumTo}
+  cd -
+
+  cur_numFilesAfter=`ls $pic_dir/incoming | wc -l`
+
+  if [ $cur_numFilesAfter -gt $cur_numFilesBefore ]
+  then
+    cur_retCode=0
+  else
+    cur_retCode=1
+  fi
+
+  return $cur_retCode
+}
+
+transferIncoming(){
+  ftp -n -v $snitchIp $snitchPort <<EOT
+  user $snitchUser $snitchPassword
+  lcd $pic_dir/incoming
+  prompt off
+  mput IMG_*.JPG
+  bye
+EOT
+
+}
+moveFiles(){
+  mv $pic_dir/incoming/IMG* $pic_dir/transferred
+}
+
+syncCamera(){
+
+  while ! cameraOn
+  do
+    print "Waiting for camera..."
+    sleep 1
+  done
+
+    print -n "the camera is on - "
+    getLastPicName | read imgNum imgName
+
+    if [ -n "$imgNum" ]
+    then
+      print "The camera has images on the card. The last picture Num: $imgNum imgName: $imgName"
+    else
+      #--- no need to sync.
+      print "Camera empty."
+      return 0
+    fi
+
+
+    #--- if the name is not the same
+    #--- get the last name from store
+
+    getLastFileInStore | read storeImgName
+
+    if [ "$imgName" != "$storeImgName" ]
+    then
+      print "  - The last image in the camera is newer than in the store"
+      print "    - Camera: $imgName" 
+      print "    - Store:  $storeImgName" 
+
+      #--- ask the camera which number this file is
+      getImgNumByName "$storeImgName" | read storeImgNum
+
+      #--- if this returns NULL, the camera i most likely emptied
+      #--- then used again. The image in store does not exist on the card
+      #--- in which case, the whole card should be synced
+
+      if [ -n "$storeImgNum" ]
+      then
+        print "The image in store: $storeImgName was found on the camera, and has camera number: $storeImgNum"
+        (( getFrom = $storeImgNum + 1 ))
+        getFiles $getFrom $imgNum
+      else
+        print "The image in store: $storeImgName was NOT found on the camera. Syncing all photos." 
+        getAllFiles
+      fi
+
+    #--- no need to transfer "old" pics to iPad
+    #  transferIncoming
+      moveFiles #--- to "transferred"
+    else
+      print "  - All up to date"
+    fi
+
+}
+
+numFilesIncoming(){
+  ls $pic_dir/incoming | wc -l
+}
+

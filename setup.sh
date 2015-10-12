@@ -37,4 +37,17 @@ do
   sudo dpkg -s $package >/dev/null 2>&1 || { echo "  - Installing $package" ; sudo apt-get -y install $package; }
 done
 
+#=======================================
+# Link save directory
+#=======================================
+ln -fs $baseDir/save $baseDir/html/save
+
+#=======================================
+# composer
+#=======================================
+
+cd $this_dir/include
+curl -s https://getcomposer.org/installer | php
+./composer.phar install
+cd -
 

@@ -1,0 +1,35 @@
+#!/bin/bash
+
+this_dir=$(cd `dirname $0`;pwd)
+
+. $this_dir/../etc/piCanon.conf
+. $this_dir/functions
+
+TS=$(date "+%Y%m%d_%H%M%S")
+
+function snap(){
+
+  maxTries=3
+  tries=0
+
+  while [ $tries -lt $maxTries ]
+  do
+    gphoto2 --capture-image-and-download --no-keep --stdout > $saveDir/$TS.jpg
+    ret=$?
+    [ $ret -eq 0 ] && { ln -fs $saveDir/$TS.jpg $saveDir/latest.jpg ; return 0 ; }
+    (( tries = $tries + 1 ))
+  done
+
+  echo "Error: could not snap the picture"
+  return 1
+}
+#===================================
+# MAIN
+#===================================
+if cameraOn
+then
+  echo "  - Snap"
+  snap
+else
+  echo "  - The camera is not on"
+fi

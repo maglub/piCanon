@@ -1,2 +1,7 @@
 log/*
 save/*
+etc/piCanon.conf
+include/composer.phar
+include/composer.lock
+include/vendor
+html/save

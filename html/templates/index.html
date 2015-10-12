@@ -17,20 +17,38 @@
                     </div>
                 </div>
                 <div id="picture-panel" class="panel-body">
-			<a href="/save/latest.jpg"><img id="picture" src=/save/latest.jpg width="100%"></a>
+			<a id="picture-link" href="/save/latest.jpg"><img id="picture" src=/save/latest.jpg width="100%"></a>
                 </div>
 	</div>
 </div>
+
+{% if readme %}
+<div class="row">
+    <div class="col-lg-12">
+        {{ readme|raw }}
+    </div>
+</div>
+{% endif %}
 
 {% endblock %}
 
 {% block myjavascript %}
 <script type="text/javascript">
-function reload()
+function reload(curDom, filename)
 {
-  img = document.getElementById("picture");
-  img.src="/save/latest.jpg?time=" + (new Date()).getTime();
-  //img.src="/save/20151011_194548.jpg?time=" + (new Date()).getTime();
+  // update the picture in the <img src>, and the link to the picture
+  var curDom = "picture";
+
+  img = document.getElementById(curDom);
+  var imgUrl = "/save/" + filename;
+
+  log.log ("Reloading picture: " + imgUrl + " into DOM: " + curDom);
+  img.src= imgUrl;
+
+  curDom = curDom + "-link"
+  log.log ("Updating link to picture: " + imgUrl + " into DOM: " + curDom);
+  link = document.getElementById(curDom);
+  link.href= imgUrl;
 }
 
 
@@ -49,7 +67,12 @@ $('#snap').click(
     var spinner = new Spinner(getSpinnerOptsSmall()).spin(target);
 
 
-    var snapRes = $.getJSON(url, function( data ) { log.log("Got it: " + data['msg']); log.log("Reloading image"); reload(); log.log("reloaded"); spinner.stop()}); 
+    var snapRes = $.getJSON( url, function( data ) {
+				log.log("Got it: " + data['filename']);
+				log.log("Reloading image");
+				reload("picture", data['filename']);
+				log.log("reloaded");
+				spinner.stop()}); 
     return false;
   });
 

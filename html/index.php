@@ -50,7 +50,12 @@ $twig->addGlobal('devicename', gethostname());
 
 $app->get('/:route', function () use ($app) {
     #$app->render('index.html', ['plotConfig' => getDbPlotConfig(),'activePlugins' => getListOfActivePlugins()]);
-    $app->render('index.html', []);
+    $readme = null;
+    $readme = Parsedown::instance()->parse(
+        file_get_contents(dirname(__DIR__) . '/README.md')
+    );
+
+    $app->render('index.html', ["readme" => $readme]);
 })->conditions(array("route" => "(|home)"));
 
   $app->run();

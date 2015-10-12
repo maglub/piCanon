@@ -6,6 +6,7 @@ this_dir=$(cd `dirname $0`;pwd)
 . $this_dir/functions
 
 TS=$(date "+%Y%m%d_%H%M%S")
+fileName=$saveDir/$TS.jpg
 
 function snap(){
 
@@ -16,11 +17,11 @@ function snap(){
   do
     gphoto2 --capture-image-and-download --no-keep --stdout > $saveDir/$TS.jpg
     ret=$?
-    [ $ret -eq 0 ] && { ln -fs $saveDir/$TS.jpg $saveDir/latest.jpg ; return 0 ; }
+    [ $ret -eq 0 ] && { ln -fs $fileName $saveDir/latest.jpg ; echo $(basename $fileName); return 0 ; }
     (( tries = $tries + 1 ))
   done
 
-  echo "Error: could not snap the picture"
+  echo "Error: could not snap the picture" 1>&2
   return 1
 }
 #===================================
@@ -28,7 +29,7 @@ function snap(){
 #===================================
 if cameraOn
 then
-  echo "  - Snap"
+  echo "  - Snap" 1>&2
   snap
 else
   echo "  - The camera is not on"

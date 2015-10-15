@@ -11,4 +11,12 @@ this_dir=$(cd `dirname $0`;pwd)
 
 command="$1"
 shift
-$command $@
+
+case $command in
+  --list|-l)
+    grep "^function" $this_dir/functions
+    ;; 
+  *)
+    $command $@
+    ;;
+esac

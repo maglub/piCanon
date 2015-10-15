@@ -15,7 +15,7 @@ function snap(){
 
   while [ $tries -lt $maxTries ]
   do
-    gphoto2 --capture-image-and-download --no-keep --stdout > $saveDir/$TS.jpg
+    gphoto2 --capture-image-and-download --no-keep --stdout > $fileName
     ret=$?
     [ $ret -eq 0 ] && { ln -fs $fileName $saveDir/latest.jpg ; echo $(basename $fileName); return 0 ; }
     (( tries = $tries + 1 ))
@@ -29,7 +29,7 @@ function snap(){
 #===================================
 if cameraOn
 then
-  echo "  - Snap" 1>&2
+  echo "  - Snap into $fileName" 1>&2
   snap
 else
   echo "  - The camera is not on"

@@ -3,7 +3,7 @@
 #--------------------------------------------------------
 
 User_Alias PISNAPPER_HTTPD = www-data
-Cmnd_Alias PISNAPPER_HTTPD_CMD = /home/pi/piSnapper/bin/snap * 
+Cmnd_Alias PISNAPPER_HTTPD_CMD = /home/pi/piSnapper/bin/snap * , /home/pi/piSnapper/bin/wrapper *
 
 PISNAPPER_HTTPD ALL=(ALL) NOPASSWD: PISNAPPER_HTTPD_CMD
 

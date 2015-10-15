@@ -71,10 +71,7 @@
         #==================================
 
         $app->get('/snap', function() use ($app, $root) {
-                #$app->render(200,o2h($res));
                 $resOs = shell_exec("sudo -u pi ${root}/../bin/snap 2>/dev/null");
-                #echo "{$resOs}\n";
-
                 $app->render(200,["msg" => "ok", "filename" => $resOs]);
         }//end of function
         );

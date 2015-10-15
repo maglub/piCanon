@@ -1,3 +1,11 @@
+function getCrontab(){
+  crontab -l | grep -v "^#"
+}
+
+function getCamera(){
+  gphoto2 --abilities
+}
+
 function getConnectedCamera(){
   local cur_output=$(gphoto2 --auto-detect  | grep -vE "^Model|^---" | awk -F"  " '{print $1}')
   echo "$cur_output"

@@ -49,8 +49,6 @@ $twig->addGlobal('devicename', gethostname());
 
 
 $app->get('/:route', function () use ($app) {
-    #$app->render('index.html', ['plotConfig' => getDbPlotConfig(),'activePlugins' => getListOfActivePlugins()]);
-    $readme = null;
     $readme = Parsedown::instance()->parse(
         file_get_contents(dirname(__DIR__) . '/README.md')
     );
@@ -59,7 +57,6 @@ $app->get('/:route', function () use ($app) {
 })->conditions(array("route" => "(|home)"));
 
 $app->get('/save', function() use ($app, $root) {
-#  $files = array_diff(scandir('/home/pi/piSnapper/save'), array('..', '.','.gitignore','thumbs'));
   $res = glob('/home/pi/piSnapper/save/*.{jpg,jpeg,gif,png}', GLOB_BRACE);
 
   $files = [] ;
@@ -69,6 +66,14 @@ $app->get('/save', function() use ($app, $root) {
   $files = array_diff($files, array('latest.jpg'));
 
   $app->render('save.html', ["files" => $files]);
+});
+
+$app->get('/config', function() use ($app, $root){
+  $res=null;
+  $camera = shell_exec("sudo -u pi ${root}/../bin/wrapper getCamera 2>/dev/null");
+  $crontab = shell_exec("sudo -u pi ${root}/../bin/wrapper getCrontab 2>/dev/null");
+
+  $app->render('config.html', ["crontab" => $crontab, "camera" => $camera ]);
 });
 
   $app->run();

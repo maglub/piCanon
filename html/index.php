@@ -58,6 +58,18 @@ $app->get('/:route', function () use ($app) {
     $app->render('index.html', ["readme" => $readme]);
 })->conditions(array("route" => "(|home)"));
 
+$app->get('/save', function() use ($app, $root) {
+#  $files = array_diff(scandir('/home/pi/piCanon/save'), array('..', '.','.gitignore','thumbs'));
+  $res = glob('/home/pi/piCanon/save/*.{jpg,jpeg,gif,png}', GLOB_BRACE);
+
+  $files = [] ;
+  foreach($res as $file){
+    $files[] = basename($file); 
+  }
+
+  $app->render('save.html', ["files" => $files]);
+});
+
   $app->run();
 
 ?>

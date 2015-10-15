@@ -5,3 +5,4 @@ include/composer.phar
 include/composer.lock
 include/vendor
 html/save
+.*.swp

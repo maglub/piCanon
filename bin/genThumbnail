@@ -1,0 +1,155 @@
+#!/usr/bin/perl 
+
+#use strict 'vars';
+use Image::Magick;
+use IO::Handle;
+
+$debug = "true";
+#-----------------------
+# Setting output buffer
+# to flush immediately
+#-----------------------
+$|=1;
+
+print "O";
+
+
+my $prefix = 'thumb';
+my $const = 300;
+my $q = Image::Magick->new;
+my @IMG;
+my @tf;
+my $no_img;
+my $ml_quality=50;
+my $outputDir = "thumbs";
+
+if ( $ARGV[0] eq '-small' ) {
+  #print "ARGV: $ARGV[0]\n";
+  $const=640;
+  $prefix='small';
+  $ml_quality=50;
+}
+
+if ( $ARGV[0] eq '-mid' ) {
+  #print "ARGV: $ARGV[0]\n";
+  $const=800;
+  $prefix='mid';
+  $ml_quality=85;
+}
+
+if ( $ARGV[0] eq '-200' ) {
+  #print "ARGV: $ARGV[0]\n";
+  $const=200;
+  $prefix='mobil';
+  $ml_quality=50;
+}
+
+if ( $ARGV[0] eq '-mobil' ) {
+  #print "ARGV: $ARGV[0]\n";
+  $const=100;
+  $prefix='mobil';
+  $ml_quality=50;
+}
+
+if ( $ARGV[0] eq '-640' ) {
+  #print "ARGV: $ARGV[0]\n";
+  $const=640;
+  $prefix='640';
+  $ml_quality=85;
+}
+
+if ( $ARGV[0] eq '-1024' ) {
+  #print "ARGV: $ARGV[0]\n";
+  $const=1024;
+  $prefix='1024';
+  $ml_quality=85;
+}
+
+if ( $ARGV[0] eq '-1200' ) {
+  #print "ARGV: $ARGV[0]\n";
+  $const=1200;
+  $prefix='1200';
+  $ml_quality=75;
+}
+
+$filename = $ARGV[1];
+
+#opendir D , ".";
+#@IMG = readdir D;
+#@tf = grep ( !/^(info\.|thumb\.|mid\.|640\.|1024\.).*/ , @IMG);
+#@IMG = grep  ( /.*(jpg|jpeg|JPG|JPEG|gif|GIF|png|PNG)$/ , @tf );
+#closedir D;
+
+
+#open LOG , ">thumbnails.log" if ($debug);
+
+#LOG -> autoflush();
+
+#$no_img = $#IMG + 1;
+
+#print "Number of pictures to process: $no_img\t TN size: $const\n";
+
+#foreach ( @IMG ){
+#  print ".";
+
+  if ( -f "$outputDir/$prefix.$filename" ) {
+    print LOG "$outputDir/$prefix.$filename already exists -skipping\n" if ($debug);
+    exit ;
+    next;
+  }
+
+  my ( $fsize ,  $max ,  $min ,  $x ,  $y ,  $h ,  $w , $blurp );
+  print LOG "BEGIN: $filename" if ($debug);
+
+  $fsize = int (( -s $filename) / 1024 );
+  $x = $q->Read($filename);
+
+  if ( $x == 0 ) {
+    print "$filename Couldn't be read, please REMOVE $filename\n";
+    undef @$q;
+    exit ;
+    next;
+  }
+
+  $h = $q->Get('width');
+  $w = $q->Get('height');
+
+  if ( $h > $w ) {
+    $max = $h; 
+    $min = $w;
+  } else {
+    $max = $w; 
+    $min = $h;
+  }
+
+  if ( not -f "$outputDir/$prefix.$filename" ) {
+    print LOG "Generating thumbnail for $filename\n" if ($debug);
+
+    if ( $h < $w ) {
+      $q -> Scale(height=>$const);
+      $q -> Scale(width=> ( $h * ($const/$w)) );
+      $blurp = int ($h * ($const/$w) ) ;
+    } else {
+      $q -> Scale(width=>$const);
+      $q -> Scale(height=> ( $w * ($const/$h)) );
+      $blurp = int ($w * ($const/$h));
+    }
+
+    $x = ${q}->Set(quality=>$ml_quality);
+#    $x = ${q}->Profile(name=>undef); 
+    $x = $q->Write("$outputDir/$prefix.$filename");
+
+    print LOG " - Done! $outputDir/$prefix.$filename" if ($debug);
+  }
+  
+  undef @$q;
+
+#}
+
+print ".";
+
+close LOG;
+
+
+exit (0);
+

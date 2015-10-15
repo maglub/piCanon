@@ -1,0 +1,28 @@
+#!/bin/bash
+
+this_dir=$(cd `dirname $0`;pwd)
+. $this_dir/../etc/piCanon.conf
+parallelism=1
+
+
+#sizes="thumb mid 640 1024"
+sizes="thumb"
+#--- classic
+
+[ -n "$1" ] && {
+rm thumb*
+rm 1024*
+rm mid*
+rm 640*
+}
+
+cd $baseDir/save
+#--- sizes
+for size in $sizes
+do
+  echo
+  echo "Size: $size "
+  #ls *.[jJ][pP][gG] *.[pP][nN][gG] 2>/dev/null | grep -vE "^thumb|^mid|^1024|^640" | xargs -L 1 -P $parallelism -IX $this_dir/genThumbnail -$size X
+  comm -23 <(ls -a *.jpg) <(ls -a thumbs | grep "jpg$"  | sed -e 's/thumb\.//') | grep -vE "^thumb|^mid|^1024|^640" | xargs -L 1 -P $parallelism -IX $this_dir/genThumbnail -$size X
+done
+

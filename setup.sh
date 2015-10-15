@@ -5,16 +5,6 @@ this_dir=$(cd `dirname $0`; pwd);
 [ -z "$configDir" ] && configDir=$this_dir/etc
 
 #=======================================
-# Install imagemagick
-#=======================================
-sudo dpkg -s imagemagick >/dev/null 2>&1 || { echo "  - Installing imagemagick" ; sudo apt-get -y install imagemagick ; }
-
-#=======================================
-# Install gphoto2
-#=======================================
-sudo dpkg -s gphoto2 >/dev/null 2>&1 || { echo "  - Installing gphoto2" ; sudo apt-get -y install gphoto2 ; }
-
-#=======================================
 # Install lighttpd
 #=======================================
 
@@ -29,10 +19,10 @@ sudo dpkg -s lighttpd >/dev/null 2>&1 || { echo "  - Installing lighttpd" ; sudo
 sudo service lighttpd restart
 
 #=======================================
-# php5
+# Packages
 #=======================================
 
-for package in php5 php5-sqlite php5-cgi php5-cli php5-rrd
+for package in gphoto2 php5 php5-sqlite php5-cgi php5-cli php5-rrd perlmagick imagemagick screen
 do
   sudo dpkg -s $package >/dev/null 2>&1 || { echo "  - Installing $package" ; sudo apt-get -y install $package; }
 done

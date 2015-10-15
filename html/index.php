@@ -59,13 +59,14 @@ $app->get('/:route', function () use ($app) {
 })->conditions(array("route" => "(|home)"));
 
 $app->get('/save', function() use ($app, $root) {
-#  $files = array_diff(scandir('/home/pi/piCanon/save'), array('..', '.','.gitignore','thumbs'));
-  $res = glob('/home/pi/piCanon/save/*.{jpg,jpeg,gif,png}', GLOB_BRACE);
+#  $files = array_diff(scandir('/home/pi/piSnapper/save'), array('..', '.','.gitignore','thumbs'));
+  $res = glob('/home/pi/piSnapper/save/*.{jpg,jpeg,gif,png}', GLOB_BRACE);
 
   $files = [] ;
   foreach($res as $file){
     $files[] = basename($file); 
   }
+  $files = array_diff($files, array('latest.jpg'));
 
   $app->render('save.html', ["files" => $files]);
 });

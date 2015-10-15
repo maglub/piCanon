@@ -2,7 +2,7 @@
 
 this_dir=$(cd `dirname $0`;pwd)
 
-. $this_dir/../etc/piCanon.conf
+. $this_dir/../etc/piSnap.conf
 . $this_dir/functions
 
 TS=$(date "+%Y%m%d_%H%M%S")

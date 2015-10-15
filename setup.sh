@@ -4,9 +4,9 @@ this_dir=$(cd `dirname $0`; pwd);
 
 echo "* Setup will check for required components and set up your raspberry pi"
 
-[ ! -f $this_dir/etc/piCanon.conf ] && { echo "Copying the etc/piCanon.conf.template to etc/piCanon.conf" ; cp $this_dir/etc/piCanon.conf.template $this_dir/etc/piCanon.conf ; }
+[ ! -f $this_dir/etc/piSnapper.conf ] && { echo "Copying the etc/piSnapper.conf.template to etc/piSnapper.conf" ; cp $this_dir/etc/piSnapper.conf.template $this_dir/etc/piSnapper.conf ; }
 
-. $this_dir/etc/piCanon.conf
+. $this_dir/etc/piSnapper.conf
 
 [ -z "$configDir" ] && configDir=$this_dir/etc
 
@@ -58,5 +58,5 @@ cd -
 # Setup sudoers
 #=======================================
 echo "  - Setting up /etc/sudoers.d"
-sudo cp $configDir/sudoers.d/piCanon /etc/sudoers.d/piCanon ; sudo chown root:root /etc/sudoers.d/piCanon ; sudo chmod 0440 /etc/sudoers.d/piCanon 
+sudo cp $configDir/sudoers.d/piSnapper /etc/sudoers.d/piSnapper ; sudo chown root:root /etc/sudoers.d/piSnapper ; sudo chmod 0440 /etc/sudoers.d/piSnapper 
 

@@ -1,6 +1,6 @@
 log/*
 save/*
-etc/piCanon.conf
+etc/piSnapper.conf
 include/composer.phar
 include/composer.lock
 include/vendor

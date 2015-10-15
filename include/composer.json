@@ -1,6 +1,6 @@
 {
-    "name": "maglub/piCanon",
-    "description": "package for piCanon",
+    "name": "maglub/piSnapper",
+    "description": "package for piSnapper",
     "type": "library",
     "license": "GPL-2.0",
     "authors": [

@@ -13,19 +13,19 @@ Requrements:
 
 ## Usage
 
-* Access piCanon through the web interface on your raspberry pi's IP address
-* The piCanon will take a picture and store it in the ~/piCanon/save directory.
-* Thumbnails are created by running ~/piCanon/bin/genThumbnails
+* Access piSnapper through the web interface on your raspberry pi's IP address
+* The piSnapper will take a picture and store it in the ~/piSnapper/save directory.
+* Thumbnails are created by running ~/piSnapper/bin/genThumbnails
 * Snapshots can be done in multiple ways:
   * Click the "snap" link on the main webpage
-  * Run the ~/piCanon/bin/snap script
+  * Run the ~/piSnapper/bin/snap script
   * Call the REST API: http://your.ip.address/api/snap
 
 
 Example (replace localhost with the rasperry pi's IP address if you run this on a different host):
 
 ```
-pi@raspberrypi ~/piCanon $ curl http://localhost/api/snap
+pi@raspberrypi ~/piSnapper $ curl http://localhost/api/snap
 
 {"msg":"ok","filename":"20151015_115317.jpg\n"}
 ```
@@ -38,8 +38,8 @@ The setup script will also download any php dependencies using composer, and giv
 
 ```
 sudo update-alternatives --set editor /usr/bin/vim.tiny
-git clone https://github.com/maglub/piCanon.git
-cd piCanon
+git clone https://github.com/maglub/piSnapper.git
+cd piSnapper
 ./setup.sh
 ```
 

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+#---------------------------------
+# With the wrapper script, you can call any function in the
+# "functions" file
+#---------------------------------
+
+this_dir=$(cd `dirname $0`;pwd)
+. $this_dir/../config/piSnapper.conf
+. $this_dir/functions
+
+command="$1"
+shift
+$command $@

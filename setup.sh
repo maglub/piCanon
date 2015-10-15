@@ -42,7 +42,8 @@ done
 # Link save directory
 #=======================================
 echo "  - Setting up the save directory symlink into the public directory"
-ln -fs $baseDir/save $baseDir/public/save
+[ ! -h $baseDir/public/save ] && { echo "    - Creating soft link to save" ; ln -fs $baseDir/save $baseDir/public/save ; }
+[ ! -d $baseDir/save/thumbs ] && { echo "    - Creating directory $baseDir/save/thumbs"; mkdir $baseDir/save/thumbs ; }
 
 #=======================================
 # composer

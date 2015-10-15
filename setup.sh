@@ -19,10 +19,10 @@ sudo dpkg -s lighttpd >/dev/null 2>&1 || { echo "    - Installing lighttpd" ; su
 
 echo "  - Setting up lighttpd configuration files"
 [ -f /etc/lighttpd/lighttpd.conf ]  && { echo "    - saving old lighttpd.conf" ; sudo mv /etc/lighttpd/lighttpd.conf /etc/lighttpd/lighttpd.conf.org ; }
-[ ! -f /etc/lighttpd/lighttpd.conf ]  && { echo "    - symlinking lighttpd.conf" ; sudo ln -s $configDir/etc/lighttpd/lighttpd.conf /etc/lighttpd ; }
-[ ! -h /etc/lighttpd/conf-enabled/10-accesslog.conf ] && { echo "    - adding accesslog configuration" ; sudo ln -s $configDir/etc/lighttpd/conf-enabled/10-accesslog.conf /etc/lighttpd/conf-enabled ; }
-[ ! -h /etc/lighttpd/conf-enabled/10-dir-listing.conf ] && { echo "    - adding directory listing configuration" ; sudo ln -s $configDir/etc/lighttpd/conf-enabled/10-dir-listing.conf /etc/lighttpd/conf-enabled ; }
-[ ! -h /etc/lighttpd/conf-enabled/10-cgi.conf ] && { echo "    - adding cgi configuration" ; sudo ln -s $configDir/etc/lighttpd/conf-enabled/10-cgi.conf /etc/lighttpd/conf-enabled ; }
+[ ! -f /etc/lighttpd/lighttpd.conf ]  && { echo "    - symlinking lighttpd.conf" ; sudo ln -fs $configDir/etc/lighttpd/lighttpd.conf /etc/lighttpd ; }
+[ ! -h /etc/lighttpd/conf-enabled/10-accesslog.conf ] && { echo "    - adding accesslog configuration" ; sudo ln -fs $configDir/etc/lighttpd/conf-enabled/10-accesslog.conf /etc/lighttpd/conf-enabled ; }
+[ ! -h /etc/lighttpd/conf-enabled/10-dir-listing.conf ] && { echo "    - adding directory listing configuration" ; sudo ln -fs $configDir/etc/lighttpd/conf-enabled/10-dir-listing.conf /etc/lighttpd/conf-enabled ; }
+[ ! -h /etc/lighttpd/conf-enabled/10-cgi.conf ] && { echo "    - adding cgi configuration" ; sudo ln -fs $configDir/etc/lighttpd/conf-enabled/10-cgi.conf /etc/lighttpd/conf-enabled ; }
 
 
 echo "  - Restarting lighttpd"
@@ -50,7 +50,7 @@ ln -fs $baseDir/save $baseDir/public/save
 
 echo "  - Setting up composer"
 curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
-cd $this_dir/include
+cd $this_dir/src
 composer install
 cd -
 

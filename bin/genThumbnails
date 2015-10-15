@@ -2,11 +2,21 @@
 
 this_dir=$(cd `dirname $0`;pwd)
 . $this_dir/../etc/piCanon.conf
-parallelism=1
 
 
 #sizes="thumb mid 640 1024"
 sizes="thumb"
+numCpus=$(cat /proc/cpuinfo  | grep processor | wc -l)
+
+case $numCpus in
+  1)
+    parallelism=1
+    ;;
+  *)
+    (( parallelism = $numCpus - 1 ))
+    ;;
+esac
+
 #--- classic
 
 [ -n "$1" ] && {

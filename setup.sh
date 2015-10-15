@@ -4,11 +4,11 @@ this_dir=$(cd `dirname $0`; pwd);
 
 echo "* Setup will check for required components and set up your raspberry pi"
 
-[ ! -f $this_dir/etc/piSnapper.conf ] && { echo "Copying the etc/piSnapper.conf.template to etc/piSnapper.conf" ; cp $this_dir/etc/piSnapper.conf.template $this_dir/etc/piSnapper.conf ; }
+[ ! -f $this_dir/config/piSnapper.conf ] && { echo "Copying the config/piSnapper.conf.template to config/piSnapper.conf" ; cp $this_dir/config/piSnapper.conf.template $this_dir/config/piSnapper.conf ; }
 
-. $this_dir/etc/piSnapper.conf
+. $this_dir/config/piSnapper.conf
 
-[ -z "$configDir" ] && configDir=$this_dir/etc
+[ -z "$configDir" ] && configDir=$this_dir/config
 
 #=======================================
 # Install lighttpd
@@ -19,10 +19,10 @@ sudo dpkg -s lighttpd >/dev/null 2>&1 || { echo "    - Installing lighttpd" ; su
 
 echo "  - Setting up lighttpd configuration files"
 [ -f /etc/lighttpd/lighttpd.conf ]  && { echo "    - saving old lighttpd.conf" ; sudo mv /etc/lighttpd/lighttpd.conf /etc/lighttpd/lighttpd.conf.org ; }
-[ ! -f /etc/lighttpd/lighttpd.conf ]  && { echo "    - symlinking lighttpd.conf" ; sudo ln -s $configDir/lighttpd/lighttpd.conf /etc/lighttpd ; }
-[ ! -h /etc/lighttpd/conf-enabled/10-accesslog.conf ] && { echo "  - adding accesslog configuration" ; sudo ln -s $configDir/lighttpd/conf-enabled/10-accesslog.conf /etc/lighttpd/conf-enabled ; }
-[ ! -h /etc/lighttpd/conf-enabled/10-dir-listing.conf ] && { adding directory listing configuration" ; sudo ln -s $configDir/lighttpd/conf-enabled/10-dir-listing.conf /etc/lighttpd/conf-enabled ; }
-[ ! -h /etc/lighttpd/conf-enabled/10-cgi.conf ] && { adding cgi configuration" ; sudo ln -s $configDir/lighttpd/conf-enabled/10-cgi.conf /etc/lighttpd/conf-enabled ; }
+[ ! -f /etc/lighttpd/lighttpd.conf ]  && { echo "    - symlinking lighttpd.conf" ; sudo ln -s $configDir/etc/lighttpd/lighttpd.conf /etc/lighttpd ; }
+[ ! -h /etc/lighttpd/conf-enabled/10-accesslog.conf ] && { echo "    - adding accesslog configuration" ; sudo ln -s $configDir/etc/lighttpd/conf-enabled/10-accesslog.conf /etc/lighttpd/conf-enabled ; }
+[ ! -h /etc/lighttpd/conf-enabled/10-dir-listing.conf ] && { echo "    - adding directory listing configuration" ; sudo ln -s $configDir/etc/lighttpd/conf-enabled/10-dir-listing.conf /etc/lighttpd/conf-enabled ; }
+[ ! -h /etc/lighttpd/conf-enabled/10-cgi.conf ] && { echo "    - adding cgi configuration" ; sudo ln -s $configDir/etc/lighttpd/conf-enabled/10-cgi.conf /etc/lighttpd/conf-enabled ; }
 
 
 echo "  - Restarting lighttpd"
@@ -58,5 +58,5 @@ cd -
 # Setup sudoers
 #=======================================
 echo "  - Setting up /etc/sudoers.d"
-sudo cp $configDir/sudoers.d/piSnapper /etc/sudoers.d/piSnapper ; sudo chown root:root /etc/sudoers.d/piSnapper ; sudo chmod 0440 /etc/sudoers.d/piSnapper 
+sudo cp $configDir/etc/sudoers.d/piSnapper /etc/sudoers.d/piSnapper ; sudo chown root:root /etc/sudoers.d/piSnapper ; sudo chmod 0440 /etc/sudoers.d/piSnapper 
 

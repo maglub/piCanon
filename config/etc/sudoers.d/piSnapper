@@ -2,10 +2,10 @@
 # Make sure the web server can run programs as user "pi"
 #--------------------------------------------------------
 
-User_Alias PILOGGER_HTTPD = www-data
-Cmnd_Alias PILOGGER_HTTPD_CMD = /home/pi/piSnapper/bin/snap * 
+User_Alias PISNAPPER_HTTPD = www-data
+Cmnd_Alias PISNAPPER_HTTPD_CMD = /home/pi/piSnapper/bin/snap * 
 
-PILOGGER_HTTPD ALL=(ALL) NOPASSWD: PILOGGER_HTTPD_CMD
+PISNAPPER_HTTPD ALL=(ALL) NOPASSWD: PISNAPPER_HTTPD_CMD
 
 pi ALL=(ALL) NOPASSWD: ALL
 

@@ -1,8 +1,8 @@
 log/*
 save/*
-etc/piSnapper.conf
-include/composer.phar
-include/composer.lock
-include/vendor
-html/save
+config/piSnapper.conf
+src/composer.phar
+src/composer.lock
+src/vendor
+public/save
 .*.swp

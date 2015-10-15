@@ -22,14 +22,14 @@ static $logroot = "";
 switch ($_SERVER['HTTP_HOST']){
 		case "cron":	
                         error_log("Server: " . $_SERVER['HTTP_HOST']);
-			$root = "/home/pi/piSnapper/include/";
+			$root = "/home/pi/piSnapper/src/";
 			$logroot = "/home/pi/piSnapper/log/";
 			define("GOOGLE_ANALYTICS", 0);
 			break;
 
 		default:
                         error_log("Server: " . $_SERVER['HTTP_HOST']);
-                        $root =  $_SERVER['DOCUMENT_ROOT'] . "/../include/";
+                        $root =  $_SERVER['DOCUMENT_ROOT'] . "/../src/";
                         $logroot =  $_SERVER['DOCUMENT_ROOT'] . "/../log/";
 			define("GOOGLE_ANALYTICS", 0);
 			break;

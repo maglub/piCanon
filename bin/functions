@@ -1,17 +1,22 @@
-cameraOn(){
-#  $this_dir/resetusb > /dev/null
-  cur_output=`gphoto2 --auto-detect | grep "Canon EOS 7D"`
+function getConnectedCamera(){
+  local cur_output=$(gphoto2 --auto-detect  | grep -vE "^Model|^---" | awk -F"  " '{print $1}')
+  echo "$cur_output"
+}
 
-  [ -n "$cur_output" ] && return 0
+function cameraOn(){
+#  $this_dir/resetusb > /dev/null
+  cur_output=$(gphoto2 --auto-detect | grep -vE "^Model|^---"|wc -l)
+
+  [ "$cur_output" -gt 0 ] && return 0
   return 1
 }
 
-getLastPicName(){
+function getLastPicName(){
 #  $this_dir/resetusb > /dev/null
   gphoto2 --list-files | grep "#" | tail -1 | awk '{print $1, $2}' | sed -e 's/#//g'
 }
 
-getImgNumByName(){
+function getImgNumByName(){
   curImgName=$1
 #  $this_dir/resetusb > /dev/null
 
@@ -20,19 +25,19 @@ getImgNumByName(){
   gphoto2 --list-files | grep "#" | grep "$curImgName" | awk '{print $1}' | sed -e 's/#//g'
 }
 
-getLastFileInStore(){
+function getLastFileInStore(){
   ls -a $pic_dir/transferred | grep IMG_ | sort |  tail -1
 }
 
 
-getAllFiles(){
+function getAllFiles(){
   cd $pic_dir/incoming
   gphoto2 --get-all-files
   cd -
   return 0
 }
 
-getFiles(){
+function getFiles(){
   curImgNumFrom=$1
   curImgNumTo=$2
 
@@ -55,7 +60,7 @@ getFiles(){
   return $cur_retCode
 }
 
-transferIncoming(){
+function transferIncoming(){
   ftp -n -v $snitchIp $snitchPort <<EOT
   user $snitchUser $snitchPassword
   lcd $pic_dir/incoming
@@ -65,11 +70,12 @@ transferIncoming(){
 EOT
 
 }
-moveFiles(){
+
+function moveFiles(){
   mv $pic_dir/incoming/IMG* $pic_dir/transferred
 }
 
-syncCamera(){
+function syncCamera(){
 
   while ! cameraOn
   do
@@ -127,7 +133,7 @@ syncCamera(){
 
 }
 
-numFilesIncoming(){
+function numFilesIncoming(){
   ls $pic_dir/incoming | wc -l
 }
 

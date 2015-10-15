@@ -41,8 +41,8 @@ done
 #=======================================
 # Link save directory
 #=======================================
-echo "  - Setting up the save directory symlink into the html directory"
-ln -fs $baseDir/save $baseDir/html/save
+echo "  - Setting up the save directory symlink into the public directory"
+ln -fs $baseDir/save $baseDir/public/save
 
 #=======================================
 # composer

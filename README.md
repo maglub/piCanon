@@ -6,6 +6,8 @@ Get this repo:
 
 ```
 git clone https://github.com/maglub/piSnapper.git
+cd piSnapper
+./setup.sh
 ```
 
 

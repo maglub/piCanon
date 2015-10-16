@@ -11,7 +11,7 @@ Requrements:
 * PHP packages: php5 php5-sqlite php5-cgi php5-cli php5-rrd
 * php Composer
 
-## Usage
+# Usage
 
 * Access piSnapper through the web interface on your raspberry pi's IP address
 * The piSnapper will take a picture and store it in the ~/piSnapper/save directory.
@@ -20,14 +20,23 @@ Requrements:
   * Click the "snap" link on the main webpage
   * Run the ~/piSnapper/bin/snap script
   * Call the REST API: http://your.ip.address/api/snap
+* Timelapses can be set up in cron (in intervals divisible by 60 seconds or 60 minutes, i.e 5 seconds, not 7 seconds. 180 seconds, not 190 seconds, due to limitations in cron)
 
 
-Example (replace localhost with the rasperry pi's IP address if you run this on a different host):
+## Examples
+* Make a snapshot through the REST API (replace localhost with the rasperry pi's IP address if you run this on a different host):
 
 ```
 pi@raspberrypi ~/piSnapper $ curl http://localhost/api/snap
-
 {"msg":"ok","filename":"20151015_115317.jpg\n"}
+```
+
+* Generate a crontab that snaps an image every 30 minutes (1800 seconds):
+
+```
+bin/wrapper setCrontab 1800 ; crontab -l
+...
+*/30 * * * * b=/home/pi/piSnapper/bin ; st=0 ; sleep $st ; $b/snap >> /var/log/piSnapper.log 2>&1 ; [ $st -eq 0 ] && $b/genThumbnails > /dev/null 2>&1 # XXX_PISNAPPER_XXX
 ```
 
 # Installation and Setup

@@ -1,0 +1,46 @@
+{% extends "_layout.html" %}
+
+{% block div %}
+<div class="row">
+   <div class="col-lg-12">
+      <h1 class="page-header">Image</h1>
+   </div>
+</div>
+
+<div class="row">
+	<div class="col-lg-12">
+		<div class="panel panel-default">
+                   <div class="panel-heading">
+                    Camera
+                  </div>
+                  <div id="panel" class="panel-body">
+                     <pre>{{ camera }}</pre>
+                  </div>
+               </div>
+	</div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Crontab
+      </div>
+    <div id="panel" class="panel-body">
+      <pre>{{ crontab }}</pre>
+    </div>
+  </div>
+<div>
+
+{% if readme %}
+<div class="row">
+    <div class="col-lg-12">
+        {{ readme|raw }}
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block myjavascript %}
+{% endblock %}
+

@@ -1,6 +1,13 @@
 # Introduction
 
-This package is meant to simplify the setup and configuration of remotely taking still pictures from a Raspberry Pi computer, connected to a Canon 7D.
+This package is meant to simplify the setup and configuration of remotely taking still pictures from a Raspberry Pi computer, connected to a Canon 7D or any other camera supported by gphoto2.
+
+Get this repo:
+
+```
+git clone https://github.com/maglub/piSnapper.git
+```
+
 
 Requrements:
 

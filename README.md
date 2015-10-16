@@ -63,6 +63,7 @@ cd piSnapper
 
 # References
 
+* http://github.com/maglub/piSnapper
 * http://www.gphoto.org/
 * https://github.com/gphoto/gphoto2
 * http://www.slimframework.com/

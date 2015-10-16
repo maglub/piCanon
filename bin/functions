@@ -39,6 +39,10 @@ function getCrontab(){
   crontab -l | grep -v "^#"
 }
 
+function getProcessQueue(){
+  ps -ef | grep [X]XX_PISNAPPER_XXX
+}
+
 function getCamera(){
   gphoto2 --abilities
 }

@@ -68,13 +68,25 @@ $app->get('/save', function() use ($app, $root) {
   $app->render('save.html', ["files" => $files]);
 });
 
-$app->get('/config', function() use ($app, $root){
+$app->map('/config', function() use ($app, $root){
   $res=null;
+
+  if ($app->request()->isPost()) {
+    $interval = $app->request->post('interval');
+    if ($interval == "Off") {
+      $res = shell_exec("sudo -u pi ${root}/../bin/wrapper disableCrontab 2>/dev/null");
+    } else {
+      $res = shell_exec("sudo -u pi ${root}/../bin/wrapper setCrontab {$interval} 2>/dev/null");
+    }
+  }
+  
+
   $camera = shell_exec("sudo -u pi ${root}/../bin/wrapper getCamera 2>/dev/null");
   $crontab = shell_exec("sudo -u pi ${root}/../bin/wrapper getCrontab 2>/dev/null");
+  $processes = shell_exec("sudo -u pi ${root}/../bin/wrapper getProcessQueue 2>/dev/null");
 
-  $app->render('config.html', ["crontab" => $crontab, "camera" => $camera ]);
-});
+  $app->render('config.html', ["crontab" => $crontab, "camera" => $camera, "processes" => $processes ]);
+})->via('GET', 'POST')->name('config');
 
   $app->run();
 

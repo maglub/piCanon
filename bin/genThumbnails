@@ -1,12 +1,17 @@
 #!/bin/bash
 
 this_dir=$(cd `dirname $0`;pwd)
+this_script=$(basename $0)
 . $this_dir/../config/piSnapper.conf
 
 
 #sizes="thumb mid 640 1024"
 sizes="thumb"
 numCpus=$(cat /proc/cpuinfo  | grep processor | wc -l)
+
+#--- check if the web-gui has started generating thumbnails
+alreadyRunning=$(ps -ef | grep [g]enThumbnails | grep "sh -c" | wc -l)
+[ $alreadyRunning -gt 1 ] && { echo "Error: $this_script is already running" 1>&2 ; ps -ef | grep [g]enThumbnails | grep -vE "$$|wrapper" ; exit 1 ; }
 
 case $numCpus in
   1)

@@ -31,12 +31,20 @@
        <div class="panel panel-default">
           <div class="panel-heading">Time-lapse settings</div>
           <div class="panel-body">
-                            <div class="row">
-                                <div class="col-lg-6">
+            <div class="row">
+               <div class="col-lg-6">
+                  <form role="form" action="/config" method="POST">
+                     <label>Actions</label>
+                     <input type="hidden" name="action" value="thumbnails">
+                     <input type="submit" value="Generate thumbnails" class="btn btn-success btn-block">
+                  </form>
+               </div>
+               <div class="col-lg-6">
 
                   <form role="form" action="/config" method="POST">
                      <div class="form-group">
                        <label>Interval (seconds between shots)</label>
+                       <input type="hidden" name="action" value="timelapse">
                        <select class="form-control" name="interval" placeholder="Interval">
                          <option>Off</option>
                          <option>10</option>
@@ -49,13 +57,12 @@
                          <option>3600</option>
                        </select>
                      </div>
-
                      <input type="submit" value="Set crontab" class="btn btn-success btn-block">
-
                   </form>
 
-</div>
-</div>
+                </div>
+
+              </div>
           </div>
        </div>
    </div>

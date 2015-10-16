@@ -56,28 +56,39 @@ $app->get('/:route', function () use ($app) {
     $app->render('index.html', ["readme" => $readme]);
 })->conditions(array("route" => "(|home)"));
 
+#======================================
+# /save
+#======================================
 $app->get('/save', function() use ($app, $root) {
-  $res = glob('/home/pi/piSnapper/save/*.{jpg,jpeg,gif,png}', GLOB_BRACE);
+  $files = getSaveFiles();
 
-  $files = [] ;
-  foreach($res as $file){
-    $files[] = basename($file); 
-  }
-  $files = array_diff($files, array('latest.jpg'));
-
-  $app->render('save.html', ["files" => $files]);
+  $app->render('save.html', ["files" => $files["basename"]]);
 });
 
+#======================================
+# /config
+#======================================
 $app->map('/config', function() use ($app, $root){
   $res=null;
 
   if ($app->request()->isPost()) {
-    $interval = $app->request->post('interval');
-    if ($interval == "Off") {
-      $res = shell_exec("sudo -u pi ${root}/../bin/wrapper disableCrontab 2>/dev/null");
-    } else {
-      $res = shell_exec("sudo -u pi ${root}/../bin/wrapper setCrontab {$interval} 2>/dev/null");
+
+    $action = $app->request->post('action');
+    switch ($action) {
+      case "thumbnails":
+        $res = shell_exec("sudo -u pi ${root}/../bin/wrapper genThumbnailsBG > /dev/null 2>&1");
+        break;
+       
+      case "timelapse":
+        $interval = $app->request->post('interval');
+        if ($interval == "Off") {
+          $res = shell_exec("sudo -u pi ${root}/../bin/wrapper disableCrontab 2>/dev/null");
+        } else {
+          $res = shell_exec("sudo -u pi ${root}/../bin/wrapper setCrontab {$interval} 2>/dev/null");
+        }
+        break;
     }
+    $app->redirect('/config');
   }
   
 

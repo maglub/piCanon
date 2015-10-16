@@ -17,11 +17,12 @@ function snap(){
   do
     gphoto2 --capture-image-and-download --no-keep --stdout > $fileName
     ret=$?
-    [ $ret -eq 0 ] && { ln -fs $fileName $saveDir/latest.jpg ; echo $(basename $fileName); return 0 ; }
+    [[ $ret -eq 0 && $(stat --format="%s" $fileName) -gt 500 ]] && { ln -fs $fileName $saveDir/latest.jpg ; echo $(basename $fileName); return 0 ; }
     (( tries = $tries + 1 ))
   done
 
   echo "Error: could not snap the picture" 1>&2
+  rm $fileName 2>/dev/null
   return 1
 }
 #===================================

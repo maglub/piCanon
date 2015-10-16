@@ -47,6 +47,14 @@ function getCamera(){
   gphoto2 --abilities
 }
 
+function genThumbnailsBG(){
+  genThumbnails &
+}
+
+function genThumbnails(){
+  sh -c "$baseDir/bin/genThumbnails #XXX_PISNAPPER_XXX"
+}
+
 function getConnectedCamera(){
   local cur_output=$(gphoto2 --auto-detect  | grep -vE "^Model|^---" | awk -F"  " '{print $1}')
   echo "$cur_output"

@@ -33,11 +33,18 @@ Requrements:
 
 
 ## Examples
+
 * Make a snapshot through the REST API (replace localhost with the rasperry pi's IP address if you run this on a different host):
 
 ```
 pi@raspberrypi ~/piSnapper $ curl http://localhost/api/snap
 {"msg":"ok","filename":"20151015_115317.jpg\n"}
+```
+
+* Make a snapshot through the cli:
+
+```
+pi@raspberrypi ~/piSnapper $ ~/piSnapper/bin/snap
 ```
 
 * Generate a crontab that snaps an image every 30 minutes (1800 seconds):

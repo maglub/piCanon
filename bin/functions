@@ -27,12 +27,18 @@ function genCrontab(){
 
 function setCrontab(){
   local interval="$1"
-  (crontab -l | grep -v "XXX_PISNAPPER_XXX"; $this_dir/wrapper genCrontab $interval ) | crontab  - 
+  (crontab -l | grep -v "XXX_PISNAPPER_CRON_XXX"; $this_dir/wrapper genCrontab $interval ) | crontab  - 
+}
+
+function killCronJobs(){
+  ps -ef | grep [X]XX_PISNAPPER_CRON_XXX | awk '{print $2}' | xargs -L1 -IX kill X
+  return 0 
 }
 
 function disableCrontab(){
   local interval="$1"
-  (crontab -l | grep -v "XXX_PISNAPPER_XXX" ) | crontab  - 
+  (crontab -l | grep -v "XXX_PISNAPPER_CRON_XXX" ) | crontab  - 
+  killCronJobs
 }
 
 function getCrontab(){
@@ -40,7 +46,7 @@ function getCrontab(){
 }
 
 function getProcessQueue(){
-  ps -ef | grep [X]XX_PISNAPPER_XXX
+  ps -ef | grep [X]XX_PISNAPPER_
 }
 
 function getCamera(){

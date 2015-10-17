@@ -5,7 +5,7 @@ function getSaveFiles(){
   array_multisort(
     array_map( 'filemtime', $res ),
     SORT_NUMERIC,
-    SORT_ASC,
+    SORT_DESC,
     $res
   );
 

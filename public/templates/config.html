@@ -47,14 +47,19 @@
                        <input type="hidden" name="action" value="timelapse">
                        <select class="form-control" name="interval" placeholder="Interval">
                          <option>Off</option>
-                         <option>10</option>
-                         <option>20</option>
-                         <option>30</option>
-                         <option>60</option>
-                         <option>120</option>
-                         <option>240</option>
-                         <option>1800</option>
-                         <option>3600</option>
+                         <option value=10>10 seconds</option>
+                         <option value=20>20 seconds</option>
+                         <option value=30>30 seconds</option>
+                         <option value=60>60 seconds</option>
+                         <option value=120>120 seconds</option>
+                         <option value=180>180 seconds - 3 minutes</option>
+                         <option value=240>240 seconds - 4 minutes</option>
+                         <option value=300>300 seconds - 5 minutes</option>
+                         <option value=360>360 seconds - 6 minutes</option>
+                         <option value=600>600 seconds - 10 minutes</option>
+                         <option value=1200>1200 seconds - 20 minutes</option>
+                         <option value=1800>1800 seconds - 30 minutes</option>
+                         <option value=3600>3600 seconds - 60 minutes</option>
                        </select>
                      </div>
                      <input type="submit" value="Set crontab" class="btn btn-success btn-block">

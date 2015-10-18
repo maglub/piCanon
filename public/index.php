@@ -48,6 +48,20 @@ $twig = $app->view()->getEnvironment();
 $twig->addGlobal('devicename', gethostname());
 
 
+        #======== helper functions
+        function o2h($obj){ #--- object to hash helper function (since json_encode cannot serialize php objects)
+                $ret = Array();
+                foreach($obj as $key => &$field){
+                        if(is_object($field)){
+                                $field = o2h($field);
+                        }
+                        $ret[$key] = $field;
+                }
+                return $ret;
+        }
+
+
+
 $app->get('/:route', function () use ($app) {
     $readme = Parsedown::instance()->parse(
         file_get_contents(dirname(__DIR__) . '/README.md')
@@ -93,10 +107,14 @@ $app->map('/config', function() use ($app, $root){
   
 
   $camera = shell_exec("sudo -u pi ${root}/../bin/wrapper getCamera 2>/dev/null");
+  $cameraConfigJson = shell_exec("sudo -u pi ${root}/../bin/wrapper getCameraConfig 2>/dev/null");
+#  var_dump($cameraConfigJson);
+  $cameraConfig = json_decode($cameraConfigJson); 
+#  var_dump($cameraConfig);
   $crontab = shell_exec("sudo -u pi ${root}/../bin/wrapper getCrontab 2>/dev/null");
   $processes = shell_exec("sudo -u pi ${root}/../bin/wrapper getProcessQueue 2>/dev/null");
 
-  $app->render('config.html', ["crontab" => $crontab, "camera" => $camera, "processes" => $processes ]);
+  $app->render('config.html', ["crontab" => $crontab, "camera" => $camera, "processes" => $processes, "camera_config" => o2h($cameraConfig) ]);
 })->via('GET', 'POST')->name('config');
 
   $app->run();

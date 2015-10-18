@@ -53,6 +53,10 @@ function getCamera(){
   gphoto2 --abilities
 }
 
+function getCameraConfig(){
+  gphoto2 --list-all-config | gawk -f $this_dir/config-to-json.awk
+}
+
 function genThumbnailsBG(){
   genThumbnails &
 }

@@ -61,3 +61,9 @@ cd -
 echo "  - Setting up /etc/sudoers.d"
 sudo cp $configDir/etc/sudoers.d/piSnapper /etc/sudoers.d/piSnapper ; sudo chown root:root /etc/sudoers.d/piSnapper ; sudo chmod 0440 /etc/sudoers.d/piSnapper 
 
+#=======================================
+# Setup /var/run/piSnapper
+#=======================================
+
+sudo mkdir /var/run/piSnapper
+sudo chown pi:pi /var/run/piSnapper

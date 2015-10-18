@@ -4,14 +4,58 @@ this_dir=$(cd `dirname $0`;pwd)
 this_script=$(basename $0)
 . $this_dir/../config/piSnapper.conf
 
+pidFile=/var/run/piSnapper/$this_script.pid
+
+
+#===================================
+# Functions
+#===================================
+function setPid(){
+  echo $$ > $pidFile
+}
+
+function removePid(){
+  rm $pidFile
+}
+
+function getPid(){
+  [ -f $pidFile ] && cat $pidFile
+}
+
+function checkPid(){
+  local pid=$(getPid)
+  #--- if $pid is empty, no pidFile exist
+  [ -z "$pid" ] && { return 0 ; }
+
+  local numProcs=$(ps -fp $pid | grep -v "^UID" | wc -l) 
+  echo "pid: $pid numProcs: $numProcs"
+  [ $numProcs -eq 0 ] && { echo "  - Bad PID-file, stating pid $pid, but $this_script is not running in a different process" 1>&2 ; removePid ; return 0 ; }  
+
+  #--- if we get here, there is another process running
+  echo "  - Process $pid is already running"
+  return 1
+}
+
+
+
+#===================================
+# MAIN
+#===================================
+
+#--- check for already running processes
+
+if ! checkPid 
+then
+  echo "Error: $this_script is already running in a different process"
+  exit 1 
+fi
+
+setPid
+
 
 #sizes="thumb mid 640 1024"
 sizes="thumb"
 numCpus=$(cat /proc/cpuinfo  | grep processor | wc -l)
-
-#--- check if the web-gui has started generating thumbnails
-alreadyRunning=$(ps -ef | grep [g]enThumbnails | grep "sh -c" | wc -l)
-[ $alreadyRunning -gt 1 ] && { echo "Error: $this_script is already running" 1>&2 ; ps -ef | grep [g]enThumbnails | grep -vE "$$|wrapper" ; exit 1 ; }
 
 case $numCpus in
   1)
@@ -41,3 +85,4 @@ do
   comm -23 <(ls -a *.jpg) <(ls -a thumbs | grep "jpg$"  | sed -e 's/thumb\.//') | grep -vE "^thumb|^mid|^1024|^640" | xargs -L 1 -P $parallelism -IX $this_dir/genThumbnail -$size X
 done
 
+removePid

@@ -112,30 +112,26 @@
         Camera config
       </div>
       <div id="panel" class="panel-body">
-
-               <div class="col-lg-6">
-
-                            <div class="dataTable_wrapper">
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                    <thead>
-                                        <tr>
-                                            <th>Attribute</th>
-                                            <th>Value</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-{% for configItem in camera_config %}
-                                        <tr class="odd gradeX">
-
-  <td>{{ configItem['Label'] }} <td>{{ configItem['Current'] }} <br>
-</tr>
-{% endfor %}
-                                    </tbody>
-                                </table>
-
-               </div>
-
+        {% if camera_config %}
+        <div class="col-lg-6">
+          <div class="dataTable_wrapper">
+            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+              <thead>
+                <tr>
+                  <th>Attribute</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+            <tbody>
+              {% for configItem in camera_config %}
+              <tr class="odd gradeX">
+                <td>{{ configItem['Label'] }} <td>{{ configItem['Current'] }} <br>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% endif %}
       </div>
     </div>
   </div>

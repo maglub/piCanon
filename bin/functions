@@ -54,7 +54,12 @@ function getCamera(){
 }
 
 function getCameraConfig(){
-  gphoto2 --list-all-config | gawk -f $this_dir/config-to-json.awk
+  if cameraOn
+  then
+    gphoto2 --list-all-config | gawk -f $this_dir/config-to-json.awk
+  else
+    echo "{}"
+  fi
 }
 
 function genThumbnailsBG(){

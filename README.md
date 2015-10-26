@@ -1,6 +1,8 @@
 # Introduction
 
-This package is meant to simplify the setup and configuration of remotely taking still pictures from a Raspberry Pi computer, connected to a Canon 7D or any other camera supported by gphoto2.
+This package is meant to simplify the setup and configuration of a web GUI to help taking still pictures from camera connected by USB to a Raspberry Pi computer, connected to a Canon 7D or any other camera supported by gphoto2.
+
+Keywords: USB, Camera, timelapse, raspberry pi
 
 Get this repo:
 

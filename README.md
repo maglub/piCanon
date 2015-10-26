@@ -36,6 +36,11 @@ Requrements:
 
 ## Examples
 
+* Example image taken with piSnapper
+
+![Fox by night][sample_image]
+
+
 * Make a snapshot through the REST API (replace localhost with the rasperry pi's IP address if you run this on a different host):
 
 ```
@@ -77,3 +82,5 @@ cd piSnapper
 * https://github.com/gphoto/gphoto2
 * http://www.slimframework.com/
 * http://startbootstrap.com/template-overviews/sb-admin-2/
+
+[sample_image]: https://raw.githubusercontent.com/maglub/piSnapper/master/public/images/mid.sample.jpg "Sample image"

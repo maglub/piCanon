@@ -38,8 +38,9 @@ Requrements:
 
 * Example image taken with piSnapper
 
-![Fox by night][sample_image]
-
+<div id="picture-panel" class="panel-body">
+<img id="picture" src="https://raw.githubusercontent.com/maglub/piSnapper/master/public/images/mid.sample.jpg" width="100%" />
+</div>
 
 * Make a snapshot through the REST API (replace localhost with the rasperry pi's IP address if you run this on a different host):
 
@@ -83,4 +84,3 @@ cd piSnapper
 * http://www.slimframework.com/
 * http://startbootstrap.com/template-overviews/sb-admin-2/
 
-[sample_image]: https://raw.githubusercontent.com/maglub/piSnapper/master/public/images/mid.sample.jpg "Sample image"

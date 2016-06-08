@@ -31,6 +31,7 @@ function snap(){
 if cameraOn
 then
   echo "  - Snap into $fileName" 1>&2
+  sleep $triggerDelay
   snap
 else
   echo "  - The camera is not on"
